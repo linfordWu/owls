@@ -1,0 +1,165 @@
+// OWLS botanical theme
+// Green owl palette with warm orange accents.
+
+// ─── CSS Custom Properties ─────────────────────────────────────
+
+:root {
+  // Backgrounds
+  --bg-primary: #f7fbef;
+  --bg-secondary: #eef7df;
+  --bg-sidebar: #f3f9e9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f4faea;
+  --bg-input: #ffffff;
+
+  // Borders
+  --border-color: #d9e8c5;
+  --border-light: #e7f1d9;
+
+  // Accent
+  --accent-primary: #5f9f35;
+  --accent-hover: #237d3b;
+  --accent-muted: #88a84a;
+
+  // Text
+  --text-primary: #24341f;
+  --text-secondary: #57704a;
+  --text-muted: #8a9b77;
+
+  // Status
+  --success: #237d3b;
+  --error: #c4512a;
+  --warning: #ff7a1a;
+
+  // Message bubbles
+  --msg-user-bg: #e8f5d7;
+  --msg-assistant-bg: #ffffff;
+  --msg-system-border: #abc878;
+
+  // Code
+  --code-bg: #edf5e5;
+
+  // Utility
+  --text-on-accent: #ffffff;
+  --text-on-overlay: #ffffff;
+  --accent-info: #5aaeb2;
+
+  // RGB components (for rgba() usage)
+  --accent-primary-rgb: 95, 159, 53;
+  --accent-hover-rgb: 35, 125, 59;
+  --text-primary-rgb: 36, 52, 31;
+  --text-muted-rgb: 138, 155, 119;
+  --success-rgb: 35, 125, 59;
+  --error-rgb: 196, 81, 42;
+  --warning-rgb: 255, 122, 26;
+  --accent-info-rgb: 90, 174, 178;
+}
+
+.dark {
+  // Backgrounds
+  --bg-primary: #10180f;
+  --bg-secondary: #172315;
+  --bg-sidebar: #132011;
+  --bg-card: #1d2b19;
+  --bg-card-hover: #26391f;
+  --bg-input: #162214;
+
+  // Borders
+  --border-color: #324629;
+  --border-light: #26391f;
+
+  // Accent
+  --accent-primary: #a9c957;
+  --accent-hover: #d8e65a;
+  --accent-muted: #8ca95a;
+
+  // Text
+  --text-primary: #f1f8df;
+  --text-secondary: #c7d8ad;
+  --text-muted: #8fa17c;
+
+  // Status
+  --success: #66bb6a;
+  --error: #ff7952;
+  --warning: #ff9f43;
+
+  // Message bubbles
+  --msg-user-bg: #26391f;
+  --msg-assistant-bg: #1d2b19;
+  --msg-system-border: #55713a;
+
+  // Code
+  --code-bg: #0f170e;
+
+  // Utility
+  --text-on-accent: #10180f;
+  --text-on-overlay: #ffffff;
+  --accent-info: #78c7c2;
+
+  // RGB components
+  --accent-primary-rgb: 169, 201, 87;
+  --accent-hover-rgb: 216, 230, 90;
+  --text-primary-rgb: 241, 248, 223;
+  --text-muted-rgb: 143, 161, 124;
+  --success-rgb: 102, 187, 106;
+  --error-rgb: 255, 121, 82;
+  --warning-rgb: 255, 159, 67;
+  --accent-info-rgb: 120, 199, 194;
+}
+
+// ─── SCSS Variables (delegate to CSS custom properties) ────────
+
+// Backgrounds
+$bg-primary: var(--bg-primary);
+$bg-secondary: var(--bg-secondary);
+$bg-sidebar: var(--bg-sidebar);
+$bg-card: var(--bg-card);
+$bg-card-hover: var(--bg-card-hover);
+$bg-input: var(--bg-input);
+
+// Borders
+$border-color: var(--border-color);
+$border-light: var(--border-light);
+
+// Accent
+$accent-primary: var(--accent-primary);
+$accent-hover: var(--accent-hover);
+$accent-muted: var(--accent-muted);
+
+// Text
+$text-primary: var(--text-primary);
+$text-secondary: var(--text-secondary);
+$text-muted: var(--text-muted);
+
+// Status
+$success: var(--success);
+$error: var(--error);
+$warning: var(--warning);
+$info: $accent-primary;
+
+// Message bubbles
+$msg-user-bg: var(--msg-user-bg);
+$msg-assistant-bg: var(--msg-assistant-bg);
+$msg-system-border: var(--msg-system-border);
+
+// Code
+$code-bg: var(--code-bg);
+
+// Typography
+$font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+$font-code: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+// Layout
+$sidebar-width: 240px;
+$sidebar-collapsed-width: 64px;
+$header-height: 60px;
+$breakpoint-mobile: 768px;
+
+// Radius
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 14px;
+
+// Transition
+$transition-fast: 0.15s ease;
+$transition-normal: 0.25s ease;

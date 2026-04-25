@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1800" height="1320" viewBox="0 0 1800 1320">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7fbff"/>
+      <stop offset="100%" stop-color="#eef4f8"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#415565"/>
+    </marker>
+    <style>
+      .title { font: 700 34px 'Microsoft YaHei','SimHei',Arial,sans-serif; fill: #17324d; }
+      .subtitle { font: 400 16px 'Microsoft YaHei','SimHei',Arial,sans-serif; fill: #4f667d; }
+      .lane { fill: #ffffff; stroke: #d7e3ed; stroke-width: 1.4; rx: 24; ry: 24; }
+      .lane-title { font: 700 22px 'Microsoft YaHei','SimHei',Arial,sans-serif; fill: #17324d; }
+      .box { fill: #ffffff; stroke: #a7bfd3; stroke-width: 1.7; rx: 18; ry: 18; }
+      .box-blue { fill: #f7fbff; stroke: #6e9ecc; stroke-width: 1.8; rx: 18; ry: 18; }
+      .box-green { fill: #f6fff9; stroke: #7eb28a; stroke-width: 1.8; rx: 18; ry: 18; }
+      .box-amber { fill: #fffaf1; stroke: #d7a350; stroke-width: 1.8; rx: 18; ry: 18; }
+      .box-title { font: 700 18px 'Microsoft YaHei','SimHei',Arial,sans-serif; fill: #17324d; }
+      .text { font: 15px 'Microsoft YaHei','SimHei',Arial,sans-serif; fill: #2a3947; }
+      .small { font: 13px 'Microsoft YaHei','SimHei',Arial,sans-serif; fill: #5b6f82; }
+      .code { font: 13px Consolas,'Courier New',monospace; fill: #1d5a92; }
+      .arrow { stroke: #415565; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+      .arrow-dash { stroke: #70869b; stroke-width: 2; fill: none; stroke-dasharray: 8 8; marker-end: url(#arrow); }
+      .note { font: 13px 'Microsoft YaHei','SimHei',Arial,sans-serif; fill: #6e5319; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="1320" fill="url(#bg)"/>
+
+  <text x="48" y="58" class="title">OSPilot：模型请求拼装流程（基于项目代码）</text>
+  <text x="48" y="88" class="subtitle">聚焦 run_conversation() 中“用户提示词、系统提示词、memory、skills、context、tools 定义”如何汇总为最终模型请求</text>
+
+  <rect x="36" y="120" width="250" height="1140" class="lane"/>
+  <rect x="312" y="120" width="790" height="1140" class="lane"/>
+  <rect x="1128" y="120" width="636" height="1140" class="lane"/>
+
+  <text x="82" y="160" class="lane-title">输入源</text>
+  <text x="374" y="160" class="lane-title">run_agent.py 编排</text>
+  <text x="1188" y="160" class="lane-title">拼装后的模型请求</text>
+
+  <rect x="64" y="218" width="192" height="108" class="box-blue"/>
+  <text x="84" y="248" class="box-title">用户提示词</text>
+  <text x="84" y="276" class="text">CLI / Gateway 把 message</text>
+  <text x="84" y="300" class="text">传给 AIAgent.run_conversation()</text>
+  <text x="84" y="322" class="code">cli.py / gateway/run.py</text>
+
+  <rect x="64" y="358" width="192" height="126" class="box-green"/>
+  <text x="84" y="388" class="box-title">系统提示词来源</text>
+  <text x="84" y="416" class="text">SOUL.md</text>
+  <text x="84" y="440" class="text">默认身份 / 自定义 system_message</text>
+  <text x="84" y="464" class="code">load_soul_md()</text>
+
+  <rect x="64" y="520" width="192" height="126" class="box-green"/>
+  <text x="84" y="550" class="box-title">记忆来源</text>
+  <text x="84" y="578" class="text">memory store</text>
+  <text x="84" y="602" class="text">user profile</text>
+  <text x="84" y="626" class="code">format_for_system_prompt()</text>
+
+  <rect x="64" y="682" width="192" height="126" class="box-green"/>
+  <text x="84" y="712" class="box-title">skills 来源</text>
+  <text x="84" y="740" class="text">扫描 skills 目录</text>
+  <text x="84" y="764" class="text">生成 available_skills 索引</text>
+  <text x="84" y="788" class="code">build_skills_system_prompt()</text>
+
+  <rect x="64" y="844" width="192" height="126" class="box-green"/>
+  <text x="84" y="874" class="box-title">项目上下文来源</text>
+  <text x="84" y="902" class="text">AGENTS.md / OSPILOT.md</text>
+  <text x="84" y="926" class="text">.cursorrules / CLAUDE.md</text>
+  <text x="84" y="950" class="code">build_context_files_prompt()</text>
+
+  <rect x="64" y="1006" width="192" height="126" class="box-amber"/>
+  <text x="84" y="1036" class="box-title">工具定义来源</text>
+  <text x="84" y="1064" class="text">按 toolset 过滤后的 tools</text>
+  <text x="84" y="1088" class="text">会一起发给模型</text>
+  <text x="84" y="1112" class="code">model_tools.get_tool_definitions()</text>
+
+  <rect x="350" y="210" width="710" height="122" class="box-blue"/>
+  <text x="378" y="240" class="box-title">1. run_conversation() 初始化本轮消息</text>
+  <text x="378" y="268" class="text">复制 conversation_history，追加当前 user_message 到 messages</text>
+  <text x="378" y="292" class="text">prefill 不直接写入 messages，只在 API 调用时临时插入</text>
+  <text x="378" y="316" class="code">run_agent.py :: run_conversation()</text>
+
+  <rect x="350" y="368" width="710" height="240" class="box-green"/>
+  <text x="378" y="400" class="box-title">2. _build_system_prompt() 构造 cached system prompt</text>
+  <text x="378" y="428" class="text">拼接顺序固定：</text>
+  <text x="398" y="454" class="text">• Identity：SOUL.md 或 DEFAULT_AGENT_IDENTITY</text>
+  <text x="398" y="478" class="text">• Tool-aware guidance：memory / session_search / skill_manage 指导语</text>
+  <text x="398" y="502" class="text">• Tool-use enforcement：针对 GPT / Codex 等模型的工具使用约束</text>
+  <text x="398" y="526" class="text">• Custom system_message</text>
+  <text x="398" y="550" class="text">• Persistent memory 与 user profile</text>
+  <text x="398" y="574" class="text">• Skills system prompt 与 project context</text>
+  <text x="398" y="598" class="text">• 时间、会话 ID、模型、平台提示</text>
+
+  <rect x="350" y="646" width="710" height="178" class="box-green"/>
+  <text x="378" y="678" class="box-title">3. 对话记忆与 Honcho 预取</text>
+  <text x="378" y="706" class="text">首轮：Honcho prefetch 可被烘焙进 cached system prompt</text>
+  <text x="378" y="730" class="text">后续轮次：Honcho turn context 只临时注入当前 user message</text>
+  <text x="378" y="754" class="text">这样做是为了保持系统提示稳定，提升 prompt cache 命中率</text>
+  <text x="378" y="778" class="code">run_agent.py :: _honcho_prefetch() / _cached_system_prompt</text>
+
+  <rect x="350" y="862" width="710" height="214" class="box-blue"/>
+  <text x="378" y="894" class="box-title">4. 进入主循环，生成 api_messages</text>
+  <text x="378" y="922" class="text">先从 messages 复制为 api_messages，再做 API 专用变换：</text>
+  <text x="398" y="948" class="text">• 给 assistant 消息补 reasoning_content</text>
+  <text x="398" y="972" class="text">• 注入 effective_system = cached prompt + ephemeral prompt + plugin context</text>
+  <text x="398" y="996" class="text">• 插入 prefill_messages</text>
+  <text x="398" y="1020" class="text">• 应用 Anthropic prompt caching 标记</text>
+  <text x="398" y="1044" class="text">• sanitize_api_messages() 修正孤立 tool 结果</text>
+  <text x="378" y="1068" class="code">run_agent.py :: effective_system / api_messages</text>
+
+  <rect x="350" y="1108" width="710" height="112" class="box-amber"/>
+  <text x="378" y="1140" class="box-title">5. 把工具 schema 一起组包</text>
+  <text x="378" y="1168" class="text">self.tools 来自 get_tool_definitions()，和 messages 一起传给 _build_api_kwargs()</text>
+  <text x="378" y="1192" class="code">model_tools.py :: get_tool_definitions()</text>
+
+  <rect x="1168" y="228" width="548" height="220" class="box-blue"/>
+  <text x="1198" y="260" class="box-title">最终 system 提示内容</text>
+  <text x="1198" y="288" class="text">system = cached_system_prompt</text>
+  <text x="1198" y="312" class="text">+ ephemeral_system_prompt（本次调用临时追加）</text>
+  <text x="1198" y="336" class="text">+ pre_llm_call 插件返回的 context</text>
+  <text x="1198" y="360" class="text">注意：prefill_messages 与 user_message 不在这里，而是在 messages 数组中</text>
+  <text x="1198" y="388" class="code">run_agent.py :: effective_system</text>
+  <text x="1198" y="412" class="code">_build_system_prompt() + runtime additions</text>
+
+  <rect x="1168" y="488" width="548" height="252" class="box-blue"/>
+  <text x="1198" y="520" class="box-title">最终 messages / input 内容</text>
+  <text x="1198" y="548" class="text">顺序上通常是：</text>
+  <text x="1218" y="574" class="text">1) system（effective_system）</text>
+  <text x="1218" y="598" class="text">2) prefill_messages（如果配置了）</text>
+  <text x="1218" y="622" class="text">3) conversation_history 里的历史 user / assistant / tool 消息</text>
+  <text x="1218" y="646" class="text">4) 当前 user_message</text>
+  <text x="1218" y="670" class="text">5) 如果是后续轮次，可能在当前 user_message 内附加 Honcho turn context</text>
+  <text x="1198" y="700" class="code">run_agent.py :: api_messages</text>
+  <text x="1198" y="724" class="code">_inject_honcho_turn_context()</text>
+
+  <rect x="1168" y="780" width="548" height="192" class="box-amber"/>
+  <text x="1198" y="812" class="box-title">最终 tools 内容</text>
+  <text x="1198" y="840" class="text">工具 schema 来自 registry.get_definitions()</text>
+  <text x="1198" y="864" class="text">并按 enabled_toolsets / disabled_toolsets 过滤</text>
+  <text x="1198" y="888" class="text">某些 schema 会动态裁剪，比如 execute_code / browser_navigate</text>
+  <text x="1198" y="916" class="code">model_tools.py :: get_tool_definitions()</text>
+  <text x="1198" y="940" class="code">registry.get_definitions()</text>
+
+  <rect x="1168" y="1012" width="548" height="194" class="box-green"/>
+  <text x="1198" y="1044" class="box-title">最终 API 请求对象</text>
+  <text x="1198" y="1072" class="text">_build_api_kwargs() 输出：</text>
+  <text x="1218" y="1098" class="text">• model</text>
+  <text x="1218" y="1122" class="text">• messages 或 Responses API 的 input</text>
+  <text x="1218" y="1146" class="text">• tools</text>
+  <text x="1218" y="1170" class="text">• timeout / reasoning / extra_body / provider 偏好</text>
+  <text x="1198" y="1198" class="code">run_agent.py :: _build_api_kwargs()</text>
+
+  <path d="M256 272 L350 272" class="arrow"/>
+  <path d="M256 420 L350 468" class="arrow-dash"/>
+  <path d="M256 582 L350 560" class="arrow-dash"/>
+  <path d="M256 744 L350 598" class="arrow-dash"/>
+  <path d="M256 906 L350 622" class="arrow-dash"/>
+  <path d="M256 1068 L350 1164" class="arrow-dash"/>
+
+  <path d="M705 332 L705 368" class="arrow"/>
+  <path d="M705 608 L705 646" class="arrow"/>
+  <path d="M705 824 L705 862" class="arrow"/>
+  <path d="M705 1076 L705 1108" class="arrow"/>
+
+  <path d="M1060 488 L1168 340" class="arrow"/>
+  <path d="M1060 980 L1168 614" class="arrow"/>
+  <path d="M1060 1164 L1168 876" class="arrow"/>
+  <path d="M1442 972 L1442 1012" class="arrow"/>
+
+  <text x="1176" y="1238" class="note">补充：当前仓库里 verbose tracing 已经能打印出 System prompt assembly、API messages before request、API request summary。</text>
+  <text x="350" y="1250" class="code">关键代码：run_agent.py::_build_system_prompt / run_conversation / _build_api_kwargs，agent/prompt_builder.py::build_skills_system_prompt / build_context_files_prompt</text>
+</svg>

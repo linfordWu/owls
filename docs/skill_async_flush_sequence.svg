@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="980" viewBox="0 0 1500 980" role="img" aria-labelledby="title desc">
+  <title id="title">OSPilot 技能异步沉淀时序图</title>
+  <desc id="desc">用通俗方式展示：后台异步沉淀 skill 为什么不会阻塞主流程。</desc>
+
+  <defs>
+    <style>
+      .bg { fill: #f8fbff; }
+      .title { font: 700 28px 'Segoe UI', Tahoma, sans-serif; fill: #0f172a; }
+      .subtitle { font: 400 15px 'Segoe UI', Tahoma, sans-serif; fill: #334155; }
+      .lane { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.2; }
+      .lane-title { font: 700 14px 'Segoe UI', Tahoma, sans-serif; fill: #1e293b; }
+      .lifeline { stroke: #94a3b8; stroke-width: 1.5; stroke-dasharray: 6 6; }
+      .msg { stroke: #0f766e; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .msg-fast { stroke: #2563eb; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .msg-bg { stroke: #7c3aed; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .msg-fail { stroke: #dc2626; stroke-width: 2; fill: none; marker-end: url(#arrow); stroke-dasharray: 7 5; }
+      .msg-text { font: 13px 'Segoe UI', Tahoma, sans-serif; fill: #0f172a; }
+      .note { fill: #ecfeff; stroke: #0891b2; stroke-width: 1.2; }
+      .note-text { font: 13px 'Segoe UI', Tahoma, sans-serif; fill: #0c4a6e; }
+      .phase { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1; }
+      .phase-text { font: 600 12px 'Segoe UI', Tahoma, sans-serif; fill: #334155; }
+      .ok { fill: #ecfdf5; stroke: #16a34a; stroke-width: 1.2; }
+      .ok-text { font: 12px 'Segoe UI', Tahoma, sans-serif; fill: #166534; }
+    </style>
+
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1500" height="980" />
+
+  <text class="title" x="46" y="56">OSPilot 技能异步沉淀时序图</text>
+  <text class="subtitle" x="46" y="84">目标：主聊天流程立即返回；Skill 的创建/优化在后台执行，失败也不会影响主链路。</text>
+
+  <rect class="phase" x="40" y="110" width="1420" height="40" rx="8" />
+  <text class="phase-text" x="56" y="136">触发示例：执行 /reset 或 /resume 时，Gateway 调用 create_task(_async_flush_memories(...))</text>
+
+  <g>
+    <rect class="lane" x="50" y="170" width="220" height="60" rx="10" />
+    <text class="lane-title" x="104" y="206">用户</text>
+    <line class="lifeline" x1="160" y1="230" x2="160" y2="920" />
+
+    <rect class="lane" x="290" y="170" width="260" height="60" rx="10" />
+    <text class="lane-title" x="328" y="206">Gateway 主流程</text>
+    <line class="lifeline" x1="420" y1="230" x2="420" y2="920" />
+
+    <rect class="lane" x="570" y="170" width="240" height="60" rx="10" />
+    <text class="lane-title" x="614" y="206">异步任务</text>
+    <line class="lifeline" x1="690" y1="230" x2="690" y2="920" />
+
+    <rect class="lane" x="830" y="170" width="250" height="60" rx="10" />
+    <text class="lane-title" x="870" y="206">工作线程</text>
+    <line class="lifeline" x1="955" y1="230" x2="955" y2="920" />
+
+    <rect class="lane" x="1100" y="170" width="190" height="60" rx="10" />
+    <text class="lane-title" x="1138" y="206">临时 Agent</text>
+    <line class="lifeline" x1="1195" y1="230" x2="1195" y2="920" />
+
+    <rect class="lane" x="1310" y="170" width="140" height="60" rx="10" />
+    <text class="lane-title" x="1336" y="206">Skill 存储</text>
+    <line class="lifeline" x1="1380" y1="230" x2="1380" y2="920" />
+  </g>
+
+  <line class="msg" x1="160" y1="280" x2="420" y2="280" />
+  <text class="msg-text" x="178" y="270">1) 用户发送 /reset 或 /resume</text>
+
+  <line class="msg-bg" x1="420" y1="330" x2="690" y2="330" />
+  <text class="msg-text" x="448" y="320">2) create_task(_async_flush_memories)</text>
+
+  <line class="msg-fast" x1="420" y1="380" x2="160" y2="380" />
+  <text class="msg-text" x="186" y="370">3) 立即返回：会话已重置</text>
+
+  <rect class="ok" x="54" y="402" width="490" height="48" rx="8" />
+  <text class="ok-text" x="74" y="430">主流程在这里已经完成，用户可以继续聊天，不需要等待 skill 沉淀结束。</text>
+
+  <line class="msg-bg" x1="690" y1="470" x2="955" y2="470" />
+  <text class="msg-text" x="740" y="460">4) run_in_executor(...)</text>
+
+  <line class="msg" x1="955" y1="520" x2="1195" y2="520" />
+  <text class="msg-text" x="980" y="510">5) 构造 flush 提示词 + run_conversation</text>
+
+  <line class="msg" x1="1195" y1="570" x2="1380" y2="570" />
+  <text class="msg-text" x="1204" y="560">6) 按需触发 skill_manage(create/patch)</text>
+
+  <line class="msg" x1="1380" y1="620" x2="1195" y2="620" />
+  <text class="msg-text" x="1206" y="610">7) 写入/扫描/缓存刷新并返回结果</text>
+
+  <line class="msg" x1="1195" y1="670" x2="955" y2="670" />
+  <text class="msg-text" x="1032" y="660">8) 工作线程执行完成</text>
+
+  <line class="msg" x1="955" y1="720" x2="690" y2="720" />
+  <text class="msg-text" x="732" y="710">9) 异步任务完成回调并清理</text>
+
+  <line class="msg-fail" x1="955" y1="770" x2="690" y2="770" />
+  <text class="msg-text" x="700" y="760">若 flush 失败：记录日志 + 吞掉异常</text>
+
+  <rect class="note" x="52" y="815" width="1398" height="118" rx="10" />
+  <text class="note-text" x="72" y="845">为什么不会阻塞主流程：</text>
+  <text class="note-text" x="72" y="870">- Gateway 使用 fire-and-forget（create_task）调度后，立即返回用户响应。</text>
+  <text class="note-text" x="72" y="893">- 耗时工作通过 run_in_executor 下沉到线程池，不占用事件循环。</text>
+  <text class="note-text" x="72" y="916">- 后台路径异常被隔离处理，主聊天链路可持续运行。</text>
+</svg>
